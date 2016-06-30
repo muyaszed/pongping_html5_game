@@ -1,0 +1,140 @@
+<style>
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+</style>
+
+<html>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+</html>
+
+
+<script>
+var canvas;
+var canvasContext;
+var spaceSpeed = 5;
+
+window.onload = function() {
+  canvas = document.getElementById('gameCanvas');
+  canvasContext = canvas.getContext('2d');
+  var framePerSecond = 30;
+  run = setInterval(runGame, 1000/framePerSecond);
+
+
+
+};
+
+function runGame() {
+  drawEverything();
+  moveEverything();
+}
+
+function drawEverything() {
+
+  canvasContext.fillStyle = 'black';
+  canvasContext.fillRect(0,0,canvas.width,canvas.height);
+	drawSpaceShip();
+
+
+};
+
+
+var spaceBodyX = 375;
+var spaceBodyY = 550;
+var wingLeftX = 355;
+var wingLeftY = 580;
+var wingRightX = 425;
+var wingRightY = 580;
+var spaceGunX = 390;
+var spaceGunY = 530;
+
+function drawSpaceShip() {
+
+
+
+	canvasContext.fillStyle = 'blue';
+  canvasContext.fillRect(spaceBodyX,spaceBodyY,50,50);
+	canvasContext.fillStyle = 'red';
+  canvasContext.fillRect(wingLeftX,wingLeftY,20,20);
+	canvasContext.fillStyle = 'red';
+  canvasContext.fillRect(wingRightX,wingRightY,20,20);
+	canvasContext.fillStyle = 'yellow';
+  canvasContext.fillRect(spaceGunX,spaceGunY,20,20);
+};
+
+function moveEverything() {
+	spaceMovement(spaceSpeed);
+
+  if(wingLeftX < 1){
+		spaceSpeed = -spaceSpeed
+  }else if(wingRightX  > canvas.width-21){
+		spaceSpeed = -spaceSpeed
+  }
+
+
+
+	function spaceMovement(spaceSpeed){
+		spaceBodyX += spaceSpeed ;
+
+		wingLeftX += spaceSpeed;
+
+		wingRightX += spaceSpeed ;
+
+		spaceGunX += spaceSpeed ;
+
+
+	};
+
+}
+
+
+
+</script>
