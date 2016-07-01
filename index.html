@@ -53,6 +53,30 @@ table {
   font-size: 80px;
 }
 
+#start {
+  width: 200px;
+  height: 100px;
+  font-size: 40px;
+  
+}
+
+#name {
+  width: 200px;
+  margin: 0 auto;
+}
+
+.username {
+  margin-top: 200px;
+}
+
+#gameCanvas {
+  margin-top: -180px;
+}
+
+#comName {
+  display: none;
+}
+
 
 
 
@@ -79,9 +103,18 @@ table {
 
 <div class="row">
   <div class="col-xs-1">
+    <div id="playerName"></div>
     <div id="playerScore" class="text-center">0</div>
   </div>
   <div class="col-xs-10 text-center">
+
+    <form id="myform">
+      <div class="username form-group text-center">
+        <label for="name">Your name</label>
+        <input type="text" class="form-control" id="name" name="name">
+      </div>
+      
+    </form>
     
       <canvas id="gameCanvas" width="800" height="600"></canvas>
   
@@ -89,6 +122,7 @@ table {
      
   </div>
   <div class="col-xs-1">
+  <div id="comName">Computer</div>
     <div id="computerScore" class="text-center">0</div>
   </div>
 </div>
@@ -122,8 +156,10 @@ var paddleComY = 280;
 var paddleHeight = 100;
 var player1Score = 0;
 var player2Score = 0;
-var winPoint = 3;
+var winPoint = 5;
 var gameOver = false;
+var playerName ;
+var run;
 
 function calculateMousePos(evt){
   var rect = canvas.getBoundingClientRect();
@@ -138,8 +174,10 @@ function calculateMousePos(evt){
 
 document.getElementById("start").addEventListener("click", gameLoop);
 function gameLoop() {
-  document.getElementById('gameCanvas').style.display = 'inline-block'
-  document.getElementById('start').style.display = 'none'
+  playerName = document.getElementById('name').value;
+  gameOver = false;
+  document.getElementById('gameCanvas').style.display = 'inline-block';
+  document.getElementById('start').style.display = 'none';
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
   var framePerSecond = 30;
@@ -154,7 +192,8 @@ function gameLoop() {
 };
 
 function runGame() {
-
+  console.log(playerName);
+  // console.log(speedY + "" + speedX);
   drawEverything();
   moveEverything();
 
@@ -163,13 +202,16 @@ function runGame() {
 function drawEverything() {
 
   if(gameOver){
+    
     canvasContext.fillStyle = 'black';
+    document.getElementById('gameCanvas').style.display = 'none';
+    document.getElementById('start').style.display = 'inline-block';
     // canvasContext.fillRect(0,0,canvas.width,canvas.height);
-
+    clearInterval(run);
     return;
 
   }
-
+  
   canvasContext.fillStyle = 'black';
   canvasContext.fillRect(0,0,canvas.width,canvas.height);
   canvasContext.fillStyle = 'red';
@@ -180,7 +222,10 @@ function drawEverything() {
   canvasContext.fillRect(canvas.width-30,paddleComY,20,paddleHeight);
   // canvasContext.fillText(player1Score,100,100);
   // canvasContext.fillText(player2Score,canvas.width-100,100);
-
+   document.getElementById('comName').style.display = 'block';
+  document.getElementById('playerName').innerHTML = playerName;
+   document.getElementById('playerName').style.display = 'block';
+ 
 
 
 };
@@ -202,15 +247,11 @@ function ballReset(){
     if(player1Score>=winPoint) {
       canvasContext.fillStyle = 'yellow';
       canvasContext.fillText("Player 1 Win",canvas.height/2,canvas.width/2+50);
-      player1Score = 0;
-      player2Score = 0;
-      gameOver = true;
+      gameReset();
     }else if(player2Score>=winPoint) {
       canvasContext.fillStyle = 'yellow';
       canvasContext.fillText("Computer Win",100,100);
-      player1Score = 0;
-      player2Score = 0;
-      gameOver = true;
+     gameReset();
     }
 
     speedX = -speedX;
@@ -218,6 +259,21 @@ function ballReset(){
     ballY = canvas.height/2;
 
 };
+
+function gameReset() {
+
+      document.getElementById('playerScore').innerHTML = 0;
+      document.getElementById('computerScore').innerHTML = 0;
+      document.getElementById('playerName').style.display = 'none';
+  document.getElementById('comName').style.display = 'none';
+      player1Score = 0;
+      player2Score = 0;
+      gameOver = true;
+      var speedY = 5;
+      var speedX =15;
+      var ballX = 50;
+      var ballY = 50;
+}
 
 
 function moveEverything() {
